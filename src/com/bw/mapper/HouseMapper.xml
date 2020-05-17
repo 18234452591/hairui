@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.bw.mapper.HouseMapper">
+	<resultMap type="com.bw.bean.House" id="houseMap">
+		<id column="id" property="id" />
+		<result column="area_name" property="areaName" />
+		<result column="total_area" property="totalArea" />
+		<result column="rent_price" property="rentPrice" />
+		<result column="rent_date" property="rentDate" />
+	</resultMap>
+	<select id="list" resultMap="houseMap" parameterType="string">
+		SELECT * FROM tb_house
+		<where>
+			<if test="areaName!=null and areaName!=''">
+				area_name like '%${areaName}%'
+			</if>
+		</where>
+	</select>
+
+	<insert id="add" parameterType="com.bw.bean.House">
+		INSERT INTO tb_house
+		(area_name,total_area,rent_price,rent_date)
+		VALUES(#{areaName},#{totalArea},#{rentPrice},#{rentDate});
+	</insert>
+
+	<update id="update" parameterType="com.bw.bean.House">
+		UPDATE tb_house SET
+		area_name=#{areaName},total_area=#{totalArea},rent_price=#{rentPrice},rent_date=#{rentDate}
+		WHERE id=#{id}
+	</update>
+
+	<delete id="deleteById">
+		DELETE FROM tb_house WHERE id=#{id}
+	</delete>
+
+	<select id="getById" resultMap="houseMap">
+		SELECT * FROM tb_house WHERE
+		id=#{id}
+	</select>
+</mapper>
